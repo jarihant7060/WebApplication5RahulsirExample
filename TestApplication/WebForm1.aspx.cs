@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;  
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -18,32 +18,39 @@ namespace WebApplication5RahulsirExample.TestApplication
             if (!this.IsPostBack)
             {
                 this.BindGrid();
-             //   txtCountry.
+                //   txtCountry.
             }
         }
 
         private void BindGrid()
         {
-            string query = "SELECT * FROM Customers";
-            using (SqlConnection con = new SqlConnection(constr))
+            try
             {
-                using (SqlDataAdapter sda = new SqlDataAdapter(query, con))
+                //List<Customer> _newCust = new List<Customer>();
+                //var cust = _newCust;
+                //GridView1.DataSource = _newCust.ToList();
+                //GridView1.DataBind();
+                string constr = ConfigurationManager.ConnectionStrings["CustomerProjecttablsssConnectionString"].ConnectionString;
+                string query = "SELECT * FROM Customers";
+                using (SqlConnection con = new SqlConnection(constr))
                 {
-                    using (DataTable dt = new DataTable())
+                    using (SqlDataAdapter sda = new SqlDataAdapter(query, con))
                     {
-                        sda.Fill(dt);
-                        GridView1.DataSource = dt;
-                        GridView1.DataBind();
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            GridView1.DataSource = dt;
+                            GridView1.DataBind();
+                        }
                     }
                 }
             }
-        }
             catch (Exception ex)
             {
 
                 throw ex;
             }
-            
+
         }
         protected void OnRowCancelingEdit(object sender, EventArgs e)
         {
@@ -56,6 +63,28 @@ namespace WebApplication5RahulsirExample.TestApplication
             this.BindGrid();
         }
 
+        //protected void Insert(object sender, EventArgs e)
+        //{
+        //    string name = txtName.Text;
+        //    string country = txtCountry.Text;
+        //    txtName.Text = "";
+        //    txtCountry.Text = "";
+        //    string query = "INSERT INTO Customers VALUES(@Name, @Country)";
+        //    string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        //    using (SqlConnection con = new SqlConnection(constr))
+        //    {
+        //        using (SqlCommand cmd = new SqlCommand(query))
+        //        {
+        //            cmd.Parameters.AddWithValue("@Name", name);
+        //            cmd.Parameters.AddWithValue("@Country", country);
+        //            cmd.Connection = con;
+        //            con.Open();
+        //            cmd.ExecuteNonQuery();
+        //            con.Close();
+        //        }
+        //    }
+        //    this.BindGrid();
+        //}               
         protected void OnRowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             GridViewRow row = GridView1.Rows[e.RowIndex];
@@ -126,8 +155,8 @@ namespace WebApplication5RahulsirExample.TestApplication
             {
             }
 
-        }  
-          
+        }
+
         protected void BtnOnClick(object sender, EventArgs e)
         {
             Customer _customer = new Customer();
@@ -159,7 +188,7 @@ namespace WebApplication5RahulsirExample.TestApplication
                         conn.Open();
 
                         //Creating temp table on database
-                       
+
                         command.CommandText = "CREATE TABLE #TmpTable([ID] [int] NOT NULL, [Name][varchar](50) NULL, [Country] [varchar] (50) NULL)";
                         command.ExecuteNonQuery();
 
