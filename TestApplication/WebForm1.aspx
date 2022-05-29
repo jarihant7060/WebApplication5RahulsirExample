@@ -1,38 +1,30 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs" MasterPageFile="~/Site1.Master" Inherits="WebApplication5RahulsirExample.TestApplication.WebForm1" %>
-
-<asp:Content runat="server" ID="content" ContentPlaceHolderID="ContentPlaceHolder1">
-    <asp:ScriptManager runat="server">
-    </asp:ScriptManager>
-    <h1>Your content</h1>
-    <div id="dvGrid" style="padding: 10px; width: 616px">
-
-        <contenttemplate>
-            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false"
-                DataKeyNames="Id,Name,Country" OnRowEditing="OnRowEditing" OnRowCancelingEdit="OnRowCancelingEdit" AllowPaging="true"
-                OnRowUpdating="OnRowUpdating" OnRowDeleting="OnRowDeleting" EmptyDataText="No records has been added."
-                Width="450">
-                <Columns>
-                    <asp:BoundField DataField="Id" HeaderText="Id" InsertVisible="False" ReadOnly="True" SortExpression="Id" Visible="false" />
-                   <%-- <asp:BoundField DataField="Name" HeaderText="Name" SortExpression="Name" />--%>
-                   
-                    <asp:TemplateField HeaderText="Country" ItemStyle-Width="150">
-                        <ItemTemplate>
-                            <asp:Label ID="lblName" runat="server" Text='<%# Eval("Name") %>' />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Country" ItemStyle-Width="150">
-                        <ItemTemplate>
-                            <asp:TextBox ID="txtCountry" runat="server" Text='<%# Eval("Country") %>' />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                </Columns>
+</asp:ScriptManager>
+<h1>Your content</h1>
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" 
+            OnRowUpdating="OnRowUpdating" OnRowDeleting="OnRowDeleting" EmptyDataText="No records has been added."
+            Width="450">
+            <Columns>
+                    <ItemTemplate>
+                    </ItemTemplate>
+                    <EditItemTemplate>
+                        <asp:TextBox ID="txtName" runat="server" Text='<%# Eval("Name") %>' Width="140"></asp:TextBox>
+                    </EditItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="Country" ItemStyle-Width="150">
+                    <ItemTemplate>
+                    </ItemTemplate>
+                    <EditItemTemplate>
+                        <asp:TextBox ID="txtCountry" runat="server" Text='<%# Eval("Country") %>' Width="140"></asp:TextBox>
+                    </EditItemTemplate>
+                </asp:TemplateField>
+                <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true"
+                    ItemStyle-Width="150" />
+            </Columns>
 
 
-            </asp:GridView>
-            <asp:Button runat="server" Text="save" ID="btnsave"  OnClick="BtnOnClick" BorderStyle="Solid" Width="153px" />
-        </contenttemplate>
-
-    </div>
+        </asp:GridView>
+</div>
 </asp:Content>
 
 <%--<html xmlns="http://www.w3.org/1999/xhtml">
@@ -97,7 +89,7 @@
                                 </div>
                             </form>--%>
 
-<%--  <div id="dvGrid" style="padding: 10px; width: 450px">
+                          <%--  <div id="dvGrid" style="padding: 10px; width: 450px">
 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
     <ContentTemplate>
         <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" 
@@ -143,7 +135,7 @@
     </ContentTemplate>
 </asp:UpdatePanel>
 </div>--%>
-<%--                 </div>
+       <%--                 </div>
                     </div>
                 </div>
             </section>

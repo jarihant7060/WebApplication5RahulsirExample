@@ -24,27 +24,20 @@ namespace WebApplication5RahulsirExample.TestApplication
 
         private void BindGrid()
         {
-            try
+            string query = "SELECT * FROM Customers";
+            using (SqlConnection con = new SqlConnection(constr))
             {
-                //List<Customer> _newCust = new List<Customer>();
-                //var cust = _newCust;
-                //GridView1.DataSource = _newCust.ToList();
-                //GridView1.DataBind();
-                string constr = ConfigurationManager.ConnectionStrings["CustomerProjecttablsssConnectionString"].ConnectionString;
-                string query = "SELECT * FROM Customers";
-                using (SqlConnection con = new SqlConnection(constr))
+                using (SqlDataAdapter sda = new SqlDataAdapter(query, con))
                 {
-                    using (SqlDataAdapter sda = new SqlDataAdapter(query, con))
+                    using (DataTable dt = new DataTable())
                     {
-                        using (DataTable dt = new DataTable())
-                        {
-                            sda.Fill(dt);
-                            GridView1.DataSource = dt;
-                            GridView1.DataBind();
-                        }
+                        sda.Fill(dt);
+                        GridView1.DataSource = dt;
+                        GridView1.DataBind();
                     }
                 }
             }
+        }
             catch (Exception ex)
             {
 
@@ -63,28 +56,6 @@ namespace WebApplication5RahulsirExample.TestApplication
             this.BindGrid();
         }
 
-        //protected void Insert(object sender, EventArgs e)
-        //{
-        //    string name = txtName.Text;
-        //    string country = txtCountry.Text;
-        //    txtName.Text = "";
-        //    txtCountry.Text = "";
-        //    string query = "INSERT INTO Customers VALUES(@Name, @Country)";
-        //    string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        //    using (SqlConnection con = new SqlConnection(constr))
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand(query))
-        //        {
-        //            cmd.Parameters.AddWithValue("@Name", name);
-        //            cmd.Parameters.AddWithValue("@Country", country);
-        //            cmd.Connection = con;
-        //            con.Open();
-        //            cmd.ExecuteNonQuery();
-        //            con.Close();
-        //        }
-        //    }
-        //    this.BindGrid();
-        //}               
         protected void OnRowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             GridViewRow row = GridView1.Rows[e.RowIndex];
