@@ -13,6 +13,7 @@ namespace WebApplication5RahulsirExample.TestApplication
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
@@ -26,24 +27,14 @@ namespace WebApplication5RahulsirExample.TestApplication
         {
             try
             {
-                //List<Customer> _newCust = new List<Customer>();
-                //var cust = _newCust;
-                //GridView1.DataSource = _newCust.ToList();
-                //GridView1.DataBind();
-                string constr = ConfigurationManager.ConnectionStrings["CustomerProjecttablsssConnectionString"].ConnectionString;
-                string query = "SELECT * FROM Customers";
-                using (SqlConnection con = new SqlConnection(constr))
-                {
-                    using (SqlDataAdapter sda = new SqlDataAdapter(query, con))
-                    {
-                        using (DataTable dt = new DataTable())
-                        {
-                            sda.Fill(dt);
-                            GridView1.DataSource = dt;
+
+                CustomerProjecttablsssEntities1 dbContext = new CustomerProjecttablsssEntities1();
+                var query1 = from cust in dbContext.Customers
+                               select cust;
+
+
+                            GridView1.DataSource = query1.ToList();
                             GridView1.DataBind();
-                        }
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -159,6 +150,7 @@ namespace WebApplication5RahulsirExample.TestApplication
 
         protected void BtnOnClick(object sender, EventArgs e)
         {
+                      
             Customer _customer = new Customer();
             List<Customer> _lstCustomer = new List<Customer>();
             var button = sender as Button;
@@ -175,49 +167,62 @@ namespace WebApplication5RahulsirExample.TestApplication
                 _lstCustomer.Add(_customer);
                 _customer = new Customer();
             }
-
-            DataTable dt = new DataTable("MyTable");
-            dt = ConvertToDataTable(_lstCustomer);
-
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["CustomerProjecttablsssConnectionString"].ConnectionString))
+            foreach(var _customers in _lstCustomer)
             {
-                using (SqlCommand command = new SqlCommand("", conn))
+                using (CustomerProjecttablsssEntities1 dbContext = new CustomerProjecttablsssEntities1())
                 {
-                    try
-                    {
-                        conn.Open();
-
-                        //Creating temp table on database
-
-                        command.CommandText = "CREATE TABLE #TmpTable([ID] [int] NOT NULL, [Name][varchar](50) NULL, [Country] [varchar] (50) NULL)";
-                        command.ExecuteNonQuery();
-
-                        //Bulk insert into temp table
-                        using (SqlBulkCopy bulkcopy = new SqlBulkCopy(conn))
-                        {
-                            bulkcopy.BulkCopyTimeout = 660;
-                            bulkcopy.DestinationTableName = "#TmpTable";
-                            bulkcopy.WriteToServer(dt);
-                            bulkcopy.Close();
-                        }
-
-                        // Updating destination table, and dropping temp table
-                        command.CommandTimeout = 300;
-                        command.CommandText = "UPDATE T SET T.Country=Temp.Country FROM Customers T INNER JOIN #TmpTable Temp ON T.ID = Temp.ID; DROP TABLE #TmpTable;";
-                        command.ExecuteNonQuery();
-
-                        BindGrid();
-                    }
-                    catch (Exception ex)
-                    {
-                        // Handle exception properly
-                    }
-                    finally
-                    {
-                        conn.Close();
-                    }
+                    Customer customer = (from c in dbContext.Customers
+                                         where c.Id == _customers.Id
+                                         select c).FirstOrDefault();
+                    customer.Name = _customers.Name;
+                    customer.Country = _customers.Country;
+                   // dbContext.Customers.Add(customer);
+                    dbContext.SaveChanges();
                 }
             }
+            BindGrid();
+            // DataTable dt = new DataTable("MyTable");
+            //dt = ConvertToDataTable(_lstCustomer);
+
+            //using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["CustomerProjecttablsssConnectionString"].ConnectionString))
+            //{
+            //    using (SqlCommand command = new SqlCommand("", conn))
+            //    {
+            //        try
+            //        {
+            //            conn.Open();
+
+            //            //Creating temp table on database
+
+            //            command.CommandText = "CREATE TABLE #TmpTable([ID] [int] NOT NULL, [Name][varchar](50) NULL, [Country] [varchar] (50) NULL)";
+            //            command.ExecuteNonQuery();
+
+            //            //Bulk insert into temp table
+            //            using (SqlBulkCopy bulkcopy = new SqlBulkCopy(conn))
+            //            {
+            //                bulkcopy.BulkCopyTimeout = 660;
+            //                bulkcopy.DestinationTableName = "#TmpTable";
+            //                bulkcopy.WriteToServer(dt);
+            //                bulkcopy.Close();
+            //            }
+
+            //            // Updating destination table, and dropping temp table
+            //            command.CommandTimeout = 300;
+            //            command.CommandText = "UPDATE T SET T.Country=Temp.Country FROM Customers T INNER JOIN #TmpTable Temp ON T.ID = Temp.ID; DROP TABLE #TmpTable;";
+            //            command.ExecuteNonQuery();
+
+            //            BindGrid();
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            // Handle exception properly
+            //        }
+            //        finally
+            //        {
+            //            conn.Close();
+            //        }
+            //    }
+            //}
 
         }
         public static DataTable ConvertToDataTable<T>(IList<T> data)
@@ -235,18 +240,6 @@ namespace WebApplication5RahulsirExample.TestApplication
             }
             return table;
         }
-        //private void Avter(object sender)
-        //{
-        //    var button = (object)sender as Button;
-        //    var view = button.FindControl("GridView1") as GridView;
-        //    foreach (GridViewRow row in GridView1.Rows)
-        //    {
-        //        // Selects the text from the TextBox
-        //        // which is inside the GridView control
-        //        string textBox1 = ((Label)row.FindControl("lblName")).Text;
-        //        string textBoxText = ((TextBox)row.FindControl("txtName")).Text;
-
-        //    }
-        //}
+       
     }
 }

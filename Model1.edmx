@@ -4,9 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CustomerProjecttablsssModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'CustomerProjecttablsss.dbo.Customers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+    <Schema Namespace="CustomerProjecttablsssModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Customers">
           <Key>
             <PropertyRef Name="Id" />
@@ -16,16 +14,9 @@ warning 6002: The table/view 'CustomerProjecttablsss.dbo.Customers' does not hav
           <Property Name="Country" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityContainer Name="CustomerProjecttablsssModelStoreContainer">
-          <EntitySet Name="Customers" EntityType="Self.Customers" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Customers].[Id] AS [Id], 
-    [Customers].[Name] AS [Name], 
-    [Customers].[Country] AS [Country]
-    FROM [dbo].[Customers] AS [Customers]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CustomerProjecttablsssModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -37,7 +28,7 @@ warning 6002: The table/view 'CustomerProjecttablsss.dbo.Customers' does not hav
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityContainer Name="CustomerProjecttablsssEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="CustomerProjecttablsssEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Customers" EntityType="Self.Customer" />
         </EntityContainer>
       </Schema>
@@ -45,7 +36,7 @@ warning 6002: The table/view 'CustomerProjecttablsss.dbo.Customers' does not hav
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="CustomerProjecttablsssModelStoreContainer" CdmEntityContainer="CustomerProjecttablsssEntities">
+        <EntityContainerMapping StorageEntityContainer="CustomerProjecttablsssModelStoreContainer" CdmEntityContainer="CustomerProjecttablsssEntities1">
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="CustomerProjecttablsssModel.Customer">
               <MappingFragment StoreEntitySet="Customers">
